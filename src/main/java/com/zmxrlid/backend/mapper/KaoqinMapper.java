@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -23,4 +25,6 @@ public interface KaoqinMapper extends BaseMapper<Kaoqin> {
     @Select("select kaoqin_num from kaoqin where kaoqin_teacherid= #{teacherId} and kaoqin_date= #{date}")
     Double getnumbyteacherid(@Param("teacherId") Integer teacherId,@Param("date") String date);
 
+    @Select("select * from kaoqin where kaoqin_masterid = #{masterId} and kaoqin_date=#{date}")
+    List<Kaoqin> fandall(@Param("masterId") Integer masterId,@Param("date") String date);
 }

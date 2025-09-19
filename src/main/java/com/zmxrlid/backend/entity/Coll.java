@@ -65,5 +65,8 @@ public class Coll implements Serializable {
   @ApiModelProperty("账单状态")
   private Integer collState;
 
+  @ApiModelProperty("账单实际金额")
+  private Double collShijinum;
+
 
 }

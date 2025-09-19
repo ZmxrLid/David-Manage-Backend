@@ -118,5 +118,16 @@ public class CollController {
         queryWrapper.eq("coll_collid",teacherId).orderByDesc("coll_time");
         return collService.page(page,queryWrapper);
     }
+
+    @RequestMapping("/zongmonth")
+    public Double zongmonth(@RequestParam Integer masterId, @RequestParam String date){
+        double zongmonth = 0.0;
+        for (Coll coll : collService.list(new QueryWrapper<Coll>().like("coll_time",date).eq("coll_masterid",masterId).eq("coll_state",1))){
+            if (coll.getCollState() == 1&&coll.getCollShijinum()!=null){
+                zongmonth += coll.getCollShijinum();
+            }
+        }
+        return zongmonth;
+    }
 }
 

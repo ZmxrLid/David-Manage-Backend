@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * <p>
@@ -31,6 +33,11 @@ public class KaoqinServiceImpl extends ServiceImpl<KaoqinMapper, Kaoqin> impleme
     @Override
     public Double getnumbyteacherid(Integer teacherId, String date) {
         return kaoqinMapper.getnumbyteacherid(teacherId,date);
+    }
+
+    @Override
+    public List<Kaoqin> fandall(Integer masterId, String date) {
+        return kaoqinMapper.fandall(masterId,date);
     }
 
 }

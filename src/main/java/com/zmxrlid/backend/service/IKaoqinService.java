@@ -3,6 +3,8 @@ package com.zmxrlid.backend.service;
 import com.zmxrlid.backend.entity.Kaoqin;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -17,4 +19,5 @@ public interface IKaoqinService extends IService<Kaoqin> {
 
     Double getnumbyteacherid(Integer teacherId, String date);
 
+    List<Kaoqin> fandall(Integer masterId, String date);
 }

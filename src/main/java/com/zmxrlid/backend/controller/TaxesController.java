@@ -98,6 +98,15 @@ public class TaxesController {
         return taxesService.page(page,queryWrapper);
     }
 
+    @RequestMapping("/getDeleteAll")
+    public Page<Taxes> getDeleteAll(@RequestParam Integer pageNum,
+                                         @RequestParam Integer pageSize){
+        Page<Taxes> page = new Page<>(pageNum,pageSize);
+        QueryWrapper<Taxes> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("taxes_time");
+        return taxesService.page(page,queryWrapper);
+    }
+
     @RequestMapping("/deletepageteacher")
     public Page<Taxes> pageteacher(@RequestParam Integer pageNum,
                                    @RequestParam Integer pageSize,

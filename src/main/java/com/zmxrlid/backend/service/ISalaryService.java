@@ -18,4 +18,8 @@ public interface ISalaryService extends IService<Salary> {
     Salary fandnumbyteacherid(Integer teacherId, String date);
 
     Salary getforteacher(Integer teacherId, String date);
+
+    Boolean chuangjian(Integer teacherId, String date);
+
+    Boolean shuaxin(Salary salary);
 }

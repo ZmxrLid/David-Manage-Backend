@@ -5,9 +5,11 @@ import com.zmxrlid.backend.common.Result;
 import com.zmxrlid.backend.entity.Salary;
 import com.zmxrlid.backend.entity.Shouzhi;
 import com.zmxrlid.backend.entity.Teacher;
+import com.zmxrlid.backend.service.IOthercollService;
 import com.zmxrlid.backend.service.ISalaryService;
 import com.zmxrlid.backend.service.IShouzhiService;
 import com.zmxrlid.backend.service.ITeacherService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,25 +40,14 @@ public class ShouzhiController {
     @Resource
     private ISalaryService salaryService;
 
+    @Resource
+    private IOthercollService othercollService;
+
     @RequestMapping("/createmaster")
     public Result createMaster(@RequestParam Integer masterId,
                                @RequestParam String date){
         if (masterId == null || date == null){
             return Result.error("参数错误");
-        }
-        if (shouzhiService.getforhave(masterId,date) == null){
-            Shouzhi shouzhi = new Shouzhi();
-            shouzhi.setShouzhiMasterid(masterId);
-            shouzhi.setShouzhiDate(date);
-            shouzhi.setShouzhiState(0);
-            shouzhi.setShouzhiFangzu(0.00);
-            shouzhi.setShouzhiShui(0.00);
-            shouzhi.setShouzhiZhi(0.00);
-            shouzhi.setShouzhiShou(0.00);
-            shouzhi.setShouzhiDian(0.00);
-            shouzhi.setShouzhiWuye(0.00);
-            shouzhiService.save(shouzhi);
-            return Result.suc(shouzhi);
         }
         return Result.error("已存在");
     }
@@ -67,23 +58,7 @@ public class ShouzhiController {
         if (masterId == null || date == null){
             return Result.error("参数错误");
         }
-        Shouzhi shouzhi = new Shouzhi();
-        if (shouzhiService.getforhave(masterId,date) != null){
-            shouzhi = shouzhiService.getforhave(masterId,date);
-        }else {
-            Shouzhi shou = new Shouzhi();
-            shou.setShouzhiMasterid(masterId);
-            shou.setShouzhiDate(date);
-            shou.setShouzhiState(0);
-            shouzhi.setShouzhiFangzu(0.00);
-            shouzhi.setShouzhiShui(0.00);
-            shouzhi.setShouzhiZhi(0.00);
-            shouzhi.setShouzhiShou(0.00);
-            shouzhi.setShouzhiDian(0.00);
-            shouzhi.setShouzhiWuye(0.00);
-            shouzhiService.save(shou);
-            shouzhi = shouzhiService.getforhave(masterId,date);
-        }
+        Shouzhi shouzhi = shouzhiService.getforhave(masterId,date);
         if (shouzhi.getShouzhiState() == 1){
             return Result.error("不可修改");
         }
@@ -101,6 +76,8 @@ public class ShouzhiController {
                 }
             }
         }
+        gongzi += othercollService.fandmasterid(masterId,date).getOthercollOthercoll();
+        gongzi += othercollService.fandmasterid(masterId,date).getOthercollMastercoll();
         shouzhi.setShouzhiJixiao(jixiao);
         shouzhi.setShouzhiGongzi(gongzi);
         shouzhi.setShouzhiNum(shouzhi.getShouzhiJixiao()-shouzhi.getShouzhiGongzi()-shouzhi.getShouzhiFangzu()-shouzhi.getShouzhiShui()-shouzhi.getShouzhiZhi()+shouzhi.getShouzhiShou()-shouzhi.getShouzhiDian()-shouzhi.getShouzhiWuye());
@@ -129,9 +106,17 @@ public class ShouzhiController {
         return shouzhiService.saveOrUpdate(shouzhi)?Result.suc():Result.error();
     }
 
+    @Transactional
     @RequestMapping("/ctrls")
     public Result ctrls(@RequestBody Shouzhi shouzhi){
         shouzhi.setShouzhiState(1);
+        List<Teacher> teacherList = teacherService.fandnumbymasterid(shouzhi.getShouzhiMasterid());
+        for (Teacher teacher : teacherList){
+            Salary salary = salaryService.fandnumbyteacherid(teacher.getTeacherId(),shouzhi.getShouzhiDate());
+            if (salary != null){
+                salaryService.shuaxin(salary);
+            }
+        }
         return shouzhiService.saveOrUpdate(shouzhi)?Result.suc():Result.error();
     }
 

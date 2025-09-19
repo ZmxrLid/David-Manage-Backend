@@ -54,6 +54,7 @@ public class KaoqinController {
                 kaoqin.setKaoqinKaoqinnum(teacher.getTeacherKaoqin());
                 kaoqin.setKaoqinTeachername(teacher.getTeacherName());
                 kaoqin.setKaoqinState(0);
+                kaoqin.setKaoqinNum(0.00);
                 kaoqinService.save(kaoqin);
             }
         }
@@ -116,6 +117,9 @@ public class KaoqinController {
     @RequestMapping("/ctrls")
     public Result ctrls(@RequestBody Kaoqin kaoqin){
         kaoqin.setKaoqinState(1);
+        if (kaoqin.getKaoqinNum()==null){
+            kaoqin.setKaoqinNum(0.00);
+        }
         if(kaoqinService.updateById(kaoqin)){
             return Result.suc();
         }else {

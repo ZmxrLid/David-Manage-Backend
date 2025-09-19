@@ -3,6 +3,9 @@ package com.zmxrlid.backend.service;
 import com.zmxrlid.backend.entity.Taxes;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITaxesService extends IService<Taxes> {
 
+    List<Taxes> getClassnum(Integer teacherId, String date);
 }

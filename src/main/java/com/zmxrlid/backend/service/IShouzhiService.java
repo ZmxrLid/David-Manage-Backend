@@ -15,4 +15,6 @@ public interface IShouzhiService extends IService<Shouzhi> {
 
 
     Shouzhi getforhave(Integer masterId, String date);
+
+    Boolean chuangjian(Integer masterId, String date);
 }
