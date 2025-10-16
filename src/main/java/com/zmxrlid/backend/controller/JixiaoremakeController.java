@@ -88,7 +88,7 @@ public class JixiaoremakeController {
                     }
 
                     jixiaoremake.setJixiaoremakeStudentnum(studentnum);
-                    jixiaoremake.setJixiaoremakeJixiao(jixiao);
+                    jixiaoremake.setJixiaoremakeJixiao(jixiao+0.1);
                 }
                 jixiaoremakeService.saveOrUpdate(jixiaoremake);
             }
@@ -138,7 +138,7 @@ public class JixiaoremakeController {
                     }
 
                     jixiaoremake.setJixiaoremakeStudentnum(studentnum);
-                    jixiaoremake.setJixiaoremakeJixiao(jixiao-jixiaoremake.getJixiaoremakeKouchu());
+                    jixiaoremake.setJixiaoremakeJixiao(jixiao-jixiaoremake.getJixiaoremakeKouchu()+0.1);
                 }
                 jixiaoremakeService.saveOrUpdate(jixiaoremake);
             }

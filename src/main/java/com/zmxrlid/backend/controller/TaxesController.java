@@ -100,10 +100,11 @@ public class TaxesController {
 
     @RequestMapping("/getDeleteAll")
     public Page<Taxes> getDeleteAll(@RequestParam Integer pageNum,
-                                         @RequestParam Integer pageSize){
+                                         @RequestParam Integer pageSize,
+                                    @RequestParam Integer masterId){
         Page<Taxes> page = new Page<>(pageNum,pageSize);
         QueryWrapper<Taxes> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("taxes_time");
+        queryWrapper.orderByDesc("taxes_time").eq("taxes_masterid",masterId);
         return taxesService.page(page,queryWrapper);
     }
 
@@ -181,6 +182,11 @@ public class TaxesController {
         Taxes taxes = taxesService.getById(taxesId);
         taxes.setTaxesState(0);
         return taxesService.updateById(taxes);
+    }
+
+    @RequestMapping("/delete")
+    public Boolean delete(@RequestParam Integer taxesId) {
+        return taxesService.removeById(taxesId);
     }
 }
 
